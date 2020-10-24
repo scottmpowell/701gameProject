@@ -3,8 +3,8 @@ extends KinematicBody2D
 
 # Declare member variables here. Examples:
 var jumpvelocity = 150
-var gravityscale = 2
-var walkspeed = 100
+var gravityscale = 1
+var walkspeed = 200
 var velocity = Vector2()
 
 # 0 is left, 1 is right
@@ -38,13 +38,13 @@ func get_input():
 #func _process(delta):
 #	pass
 func _physics_process(delta):
-	velocity.y = gravityscale
+	get_input()
+	velocity.y = 20
 	if direction:
 		$Skeleton.flip_h = false
 	else:
 		$Skeleton.flip_h = true
-	get_input()
 		
-	var motion = velocity * gravityscale
+	var motion = velocity
 	move_and_collide(motion)
 	
