@@ -9,6 +9,7 @@ var velocity = Vector2()
 
 # 0 is left, 1 is right
 var direction = 1
+var form = "Skeleton"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
