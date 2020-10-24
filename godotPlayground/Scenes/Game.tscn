@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/TheSpriteBundle_Free/Level_1_256x256.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Monsters_Creatures_Fantasy/Flying eye/Flight.png" type="Texture" id=3]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Level_1_256x256.png 0"
@@ -81,10 +82,58 @@ extents = Vector2( 75.1877, 515.575 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 128.161, 132.977 )
 
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 150, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 300, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 450, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 600, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 750, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 900, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 1050, 0, 150, 150 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [node name="Game" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 175.316, 241.9 )
+position = Vector2( 903.84, 136.046 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
@@ -100,7 +149,14 @@ rotation = 1.5708
 shape = SubResource( 2 )
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="TileMap"]
+position = Vector2( 0, -6.22668 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/StaticBody2D2"]
 position = Vector2( 896.244, 324.287 )
 shape = SubResource( 3 )
+
+[node name="Bat" type="AnimatedSprite" parent="."]
+position = Vector2( 81.0904, -0.506824 )
+frames = SubResource( 12 )
+frame = 4
+playing = true
