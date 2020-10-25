@@ -8,16 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Actor",
+"language": "GDScript",
+"path": "res://Scripts/Actor.gd"
+} ]
 _global_script_class_icons={
-
+"Actor": ""
 }
 
 [application]
 
 config/name="godotPlayground"
 run/main_scene="res://Scenes/Game.tscn"
-config/icon="res://icon.png"
 
 [rendering]
 
