@@ -48,42 +48,42 @@ region = Rect2( 1050, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=9]
 flags = 4
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=10]
 flags = 4
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 150, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=11]
 flags = 4
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 300, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=12]
 flags = 4
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 450, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=13]
 flags = 4
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=14]
 flags = 4
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 150, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=15]
 flags = 4
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 300, 0, 150, 150 )
 
 [sub_resource type="AtlasTexture" id=16]
 flags = 4
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 450, 0, 150, 150 )
 
 [sub_resource type="SpriteFrames" id=17]
@@ -95,35 +95,40 @@ animations = [ {
 }, {
 "frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
 "loop": true,
-"name": "Idle",
+"name": "Walk",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
 "loop": true,
-"name": "Walk",
+"name": "Idle",
 "speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=18]
-extents = Vector2( 13.102, 25.4968 )
+extents = Vector2( 16.1727, 25.4968 )
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 469.89, 258.89 )
-scale = Vector2( 2, 2 )
+collision_layer = 2
+collision_mask = 13
 script = ExtResource( 2 )
 
 [node name="Skeleton" type="AnimatedSprite" parent="."]
 frames = SubResource( 17 )
 animation = "Idle"
-frame = 1
+frame = 3
 speed_scale = 2.0
 playing = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 
 [node name="SkeletonHitBox" type="CollisionShape2D" parent="."]
-position = Vector2( 3.77979, 0.629959 )
 shape = SubResource( 18 )
 
 [node name="Mushroom" parent="." instance=ExtResource( 5 )]
 visible = false
+
+[node name="PlatformDetector" type="RayCast2D" parent="."]
+position = Vector2( 0, 25 )
+cast_to = Vector2( 0, 10 )
+collision_mask = 13
