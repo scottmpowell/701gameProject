@@ -57,11 +57,12 @@ func get_input():
 
 
 func _physics_process(delta):
+	apply_force(GRAVITY)
 	# handles input
 	get_input()
 
 	# applies gravity and updates velocity
-	apply_force(GRAVITY)
+	
 	velocity += acceleration
 
 
@@ -69,6 +70,7 @@ func _physics_process(delta):
 	move_and_slide(velocity)
 
 	# resets acceleration and applies a sort of friction
+	
 	acceleration *= Vector2.ZERO
 	velocity.x = lerp(0, velocity.x, .98)
 	
