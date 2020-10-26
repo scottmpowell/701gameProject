@@ -43,7 +43,6 @@ func _physics_process(delta):
 	var velocity = calculate_move_velocity()
 	#velocity.y += gravity * delta
 	var is_on_platform = $PlatformDetector.is_colliding()
-	print(is_on_platform)
 	velocity = move_and_slide_with_snap(
 		velocity, snap_vector, FLOOR_NORMAL, not is_on_platform, 4, 0.9, false
 	)
