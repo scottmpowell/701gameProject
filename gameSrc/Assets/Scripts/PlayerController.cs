@@ -50,7 +50,11 @@ public class PlayerController : MonoBehaviour {
     public void Move() {
         Vector2 movement = Vector2.zero;
 
-        if(rigidBody.velocity.magnitude < max_speed) { 
+        if((rigidBody.velocity.x < max_speed && rigidBody.velocity.x >= 0) || Input.GetAxis("Horizontal") < 0)
+        { 
+            movement.x = Input.GetAxis("Horizontal");
+        } else if ((rigidBody.velocity.x > -max_speed && rigidBody.velocity.x <= 0) || Input.GetAxis("Horizontal") > 0)
+        {
             movement.x = Input.GetAxis("Horizontal");
         }
         if(Input.GetButtonDown("Jump") && is_on_ground) {
