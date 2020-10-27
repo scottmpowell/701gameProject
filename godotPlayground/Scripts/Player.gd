@@ -90,3 +90,4 @@ func apply_force(force):
 func _on_Skeleton_animation_finished():
 		if isAttacking:
 			isAttacking = false
+			$Skeleton.animation = "Idle"
