@@ -38,6 +38,9 @@ func get_input():
 		if !isAttacking: $Skeleton.play("Walk")
 
 	if Input.is_action_pressed("my_jump"): # jump
+		print(is_on_floor())
+#		if is_on_floor():
+#			apply_force(Vector2(0, JUMP_FORCE))
 		if platform_detector.is_colliding():
 			apply_force(Vector2(0, JUMP_FORCE))
 	

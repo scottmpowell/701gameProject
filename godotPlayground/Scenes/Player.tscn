@@ -154,7 +154,7 @@ visible = false
 [node name="PlatformDetector" type="RayCast2D" parent="."]
 position = Vector2( 3.30811, 26.0595 )
 enabled = true
-cast_to = Vector2( 0, 10 )
+cast_to = Vector2( 0, 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
