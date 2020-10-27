@@ -162,5 +162,5 @@ shape = SubResource( 5 )
 position = Vector2( 508.108, 218.246 )
 frames = SubResource( 14 )
 animation = "Bat"
-frame = 4
+frame = 6
 playing = true

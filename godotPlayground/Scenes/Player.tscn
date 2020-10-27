@@ -87,27 +87,27 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 450, 0, 150, 150 )
 
-[sub_resource type="AtlasTexture" id=19]
+[sub_resource type="AtlasTexture" id=17]
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 150, 150 )
 
-[sub_resource type="AtlasTexture" id=20]
+[sub_resource type="AtlasTexture" id=18]
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 150, 0, 150, 150 )
 
-[sub_resource type="AtlasTexture" id=21]
+[sub_resource type="AtlasTexture" id=19]
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 300, 0, 150, 150 )
 
-[sub_resource type="AtlasTexture" id=22]
+[sub_resource type="AtlasTexture" id=20]
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 450, 0, 150, 150 )
 
-[sub_resource type="SpriteFrames" id=17]
+[sub_resource type="SpriteFrames" id=21]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
 "loop": false,
@@ -124,13 +124,13 @@ animations = [ {
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ) ],
+"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
 "loop": true,
 "name": "Death",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=18]
+[sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 13.102, 25.4968 )
 
 [node name="Player" type="KinematicBody2D"]
@@ -140,13 +140,13 @@ script = ExtResource( 2 )
 
 [node name="Skeleton" type="AnimatedSprite" parent="."]
 position = Vector2( 0.5, -0.5 )
-frames = SubResource( 17 )
+frames = SubResource( 21 )
 animation = "Death"
 speed_scale = 2.0
 
 [node name="SkeletonHitBox" type="CollisionShape2D" parent="."]
 position = Vector2( 3.77979, 0.879959 )
-shape = SubResource( 18 )
+shape = SubResource( 22 )
 
 [node name="Mushroom" parent="." instance=ExtResource( 5 )]
 visible = false
