@@ -34,18 +34,18 @@ func handle_input(delta):
 		velocity.x = velocity.x + MAX_SPEED*delta*acceleration
 		$Skeleton.flip_h = false
 		if !isAttacking: $Skeleton.play("Walk")
+		
 	else:
 		if(velocity.x > 0):
 			velocity.x = velocity.x - MAX_SPEED*delta*deceleration
-			if(velocity.x < 0): velocity.x = 0
+			if(velocity.x < 0): velocity.x = 0.0
 		elif (velocity.x < 0):
 			velocity.x = velocity.x + MAX_SPEED*delta*deceleration
-			if(velocity.x > 0): velocity.x = 0;
+			if(velocity.x > 0): velocity.x = 0.0
 		else:
 			velocity.x = 0;
 
 	if Input.is_action_pressed("my_jump"): # jump
-		print(is_on_floor())
 #		if is_on_floor():
 #			apply_force(Vector2(0, JUMP_FORCE))
 		if platform_detector.is_colliding():
@@ -80,7 +80,7 @@ func _physics_process(delta):
 	velocity += GRAVITY
 	
 	# applies movement
-	move_and_slide(velocity)
+	move_and_slide(velocity, Vector2.UP)
 	
 	# double checks animation
 	if abs(velocity.x) < 10 && !isAttacking:
