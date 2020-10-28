@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/TheSpriteBundle_Free/Level_1_256x256.png" type="Texture" id=2]
@@ -64,16 +64,7 @@
 8/z_index = 0
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 75.1877, 515.575 )
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 387.47, 58.3336 )
-
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 218.809, 236.513 )
-
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 218.809, 175.932 )
+extents = Vector2( 75.1877, 2684.34 )
 
 [sub_resource type="AtlasTexture" id=6]
 flags = 4
@@ -131,36 +122,18 @@ position = Vector2( 38.8145, 392.495 )
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 format = 1
-tile_data = PoolIntArray( 196648, 8, 0, 327698, 7, 0, 327712, 8, 0, 458752, 0, 0, 458756, 0, 0, 458760, 0, 0, 458764, 0, 0 )
+tile_data = PoolIntArray( 458752, 0, 0, 458756, 0, 0, 458760, 0, 0, 458764, 0, 0, 458768, 0, 0, 458772, 0, 0, 458776, 0, 0, 458780, 0, 0, 458784, 0, 0, 458788, 0, 0, 458792, 0, 0, 458796, 0, 0, 458800, 0, 0, 458804, 0, 0, 458808, 0, 0, 458812, 0, 0, 458816, 0, 0, 458820, 0, 0, 458824, 0, 0, 458828, 0, 0, 458832, 0, 0 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="TileMap"]
 
 [node name="ground" type="CollisionShape2D" parent="TileMap/StaticBody2D"]
-position = Vector2( 514.088, 521.975 )
+position = Vector2( 2691.98, 527.632 )
 rotation = 1.5708
 shape = SubResource( 2 )
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="TileMap"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/StaticBody2D2"]
-position = Vector2( 1546.6, 377.741 )
-shape = SubResource( 3 )
-
-[node name="StaticBody2D3" type="StaticBody2D" parent="TileMap"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/StaticBody2D3"]
-position = Vector2( 2273.57, 580.866 )
-shape = SubResource( 4 )
-
-[node name="StaticBody2D4" type="StaticBody2D" parent="TileMap"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/StaticBody2D4"]
-position = Vector2( 2790.29, 400.904 )
-shape = SubResource( 5 )
 
 [node name="Bat" type="AnimatedSprite" parent="."]
 position = Vector2( 508.108, 218.246 )
 frames = SubResource( 14 )
 animation = "Bat"
-frame = 6
+frame = 3
 playing = true

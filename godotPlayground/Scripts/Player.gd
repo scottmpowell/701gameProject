@@ -3,15 +3,16 @@ extends Actor
 onready var platform_detector = $PlatformDetector
 
 # Declare member variables here. Examples:
-const JUMP_FORCE = -120
-const SPEED = 10
+const JUMP_FORCE = -600
+const MAX_SPEED = 500
 const GRAVITY = Vector2(0, 15);
 const MAX_VELOCITY = Vector2(1200, 1200)
 
+
 # physics
-var acceleration = Vector2.ZERO
 var velocity = Vector2.ZERO
-var direction = Vector2.ZERO # 0 is left, 1 is right
+var acceleration = 3
+var deceleration = 1.5
 
 var isAttacking = false;
 
@@ -23,26 +24,32 @@ var form = "Skeleton"
 func _ready():
 	pass # Replace with function body.
 
-func get_input():
+func handle_input(delta):
 
 	if Input.is_action_pressed("my_left"): # move left
-		direction.x = -1
-		apply_force(Vector2(-SPEED, 0))
+		velocity.x = velocity.x - MAX_SPEED*delta*acceleration
 		$Skeleton.flip_h = true
 		if !isAttacking: $Skeleton.play("Walk")
-		
 	elif Input.is_action_pressed("my_right"): # move right
-		direction.x = 1
-		apply_force(Vector2(SPEED, 0))
+		velocity.x = velocity.x + MAX_SPEED*delta*acceleration
 		$Skeleton.flip_h = false
 		if !isAttacking: $Skeleton.play("Walk")
+	else:
+		if(velocity.x > 0):
+			velocity.x = velocity.x - MAX_SPEED*delta*deceleration
+			if(velocity.x < 0): velocity.x = 0
+		elif (velocity.x < 0):
+			velocity.x = velocity.x + MAX_SPEED*delta*deceleration
+			if(velocity.x > 0): velocity.x = 0;
+		else:
+			velocity.x = 0;
 
 	if Input.is_action_pressed("my_jump"): # jump
 		print(is_on_floor())
 #		if is_on_floor():
 #			apply_force(Vector2(0, JUMP_FORCE))
 		if platform_detector.is_colliding():
-			apply_force(Vector2(0, JUMP_FORCE))
+			velocity.y = JUMP_FORCE
 	
 	if Input.is_action_pressed("my_attack"): # attack
 		if !isAttacking:
@@ -60,34 +67,26 @@ func get_input():
 
 
 func _physics_process(delta):
-	apply_force(GRAVITY)
 	# handles input
-	get_input()
-
-	# applies gravity and updates velocity
+	handle_input(delta)
 	
-	velocity += acceleration
+	#limits velocity
+	if(velocity.x > MAX_SPEED):
+		velocity.x = MAX_SPEED
+	elif(velocity.x < -MAX_SPEED):
+		velocity.x = -MAX_SPEED
 
-
+	# applies gravity
+	velocity += GRAVITY
+	
 	# applies movement
 	move_and_slide(velocity)
-
-	# resets acceleration and applies a sort of friction
-	
-	acceleration *= Vector2.ZERO
-	velocity.x = lerp(0, velocity.x, .98)
 	
 	# double checks animation
 	if abs(velocity.x) < 10 && !isAttacking:
 		$Skeleton.play("Idle")
-		direction.x = 0
 	elif abs(velocity.x) > 10 && !isAttacking:
 		$Skeleton.play("Walk")
-
-
-# applies a force to the player
-func apply_force(force):
-	acceleration += force;
 
 
 func _on_Skeleton_animation_finished():
