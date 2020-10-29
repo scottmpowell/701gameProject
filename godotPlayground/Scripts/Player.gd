@@ -12,7 +12,7 @@ const MAX_VELOCITY = Vector2(1200, 1200)
 # physics
 var velocity = Vector2.ZERO
 var acceleration = 3
-var deceleration = 1.5
+var deceleration = 3
 
 var isAttacking = false;
 

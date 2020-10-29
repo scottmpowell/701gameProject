@@ -142,4 +142,5 @@ tile_data = PoolIntArray( 458752, 0, 0, 458756, 0, 0, 458760, 0, 0, 458764, 0, 0
 position = Vector2( 508.108, 218.246 )
 frames = SubResource( 13 )
 animation = "Bat"
+frame = 1
 playing = true
