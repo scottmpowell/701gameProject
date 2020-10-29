@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
 
     public Transform followTransform;
+    public Vector2 offset;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = new Vector3(followTransform.position.x + 4, followTransform.position.y + 1, -3);
+        this.transform.position = new Vector3(followTransform.position.x + offset.x, followTransform.position.y + offset.y, -3);
     }
 }
