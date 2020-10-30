@@ -11,8 +11,10 @@ public class PlayerController : MonoBehaviour
 
     //phsyics stuff
     private Rigidbody2D rigidBody;
-    public float acceleration;
-    public float deceleration;
+    public float ground_acceleration;
+    public float ground_deceleration;
+    public float air_acceleration;
+    public float air_deceleration;
     public float maxSpeed;
     public float jumpSpeed;
     private float dt;
@@ -44,6 +46,9 @@ public class PlayerController : MonoBehaviour
     {
         // keeps track of new velocity to set as rigidBody velocity
         Vector2 movement = Vector2.zero;
+
+        float acceleration = isGrounded ? ground_acceleration : air_acceleration;
+        float deceleration = isGrounded ? ground_deceleration : air_deceleration;
 
         // Handles walking physics
         float x_input = Input.GetAxisRaw("Horizontal");
