@@ -5,23 +5,28 @@ using UnityEngine;
 public class ParallaxBackground : MonoBehaviour
 {
 
+    public GameObject cam;
     [SerializeField] private Vector2 pEMult;
-    private Transform cameraTransform;
-    private Vector3 lastCameraPosition;
+    private float length, startPos;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        cameraTransform = Camera.main.transform;
-        lastCameraPosition = cameraTransform.position;
+        startPos = transform.position.x;
+        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
-        Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
-        transform.position += new Vector3(deltaMovement.x * pEMult.x, deltaMovement.y * pEMult.y, 0);
-        lastCameraPosition = cameraTransform.position;
+        float temp = cam.transform.position.x * (1 - pEMult.x);
+        float dist = cam.transform.position.x * pEMult.x;
+
+        transform.position = new Vector3(startPos + dist, transform.position.y, transform.position.z);
+
+        if (temp > startPos + length) startPos += length;
+        else if (temp < startPos - length) startPos -= length;
     }
 }
