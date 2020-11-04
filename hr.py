@@ -35,25 +35,46 @@ def begin(opt):
 
     # Setup Haar cascade
     face_cascade = cv.CascadeClassifier(cv.data.haarcascades + "haarcascade_frontalface_default.xml")
-    heartbeat_count = 128
+    
+    heartbeat_count = 60
     heartbeat_values = [0]*heartbeat_count
     heartbeat_times = [time.time()]*heartbeat_count
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     sock.sendto(("hello").encode(), (UDP_IP, UDP_PORT))
+    count = cap.get(cv.CAP_PROP_FPS)
 
-    while(True):
+    while(cap.isOpened()):
         ret, frame = cap.read()
+        count += 1
+        if not ret:
+            break
         img = frame.copy()
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)    # Display the frame
         detected_faces = face_cascade.detectMultiScale(gray)
 
+        # Initialize box of size 0
+        bestx, besty, bestw, besth = 0, 0, 0, 0
+
+        # Because there can be multiple faces detected, make sure that the right one is selected
+        # Simple solution is to take the largest one
         for (x, y, w, h) in detected_faces:
-            cv.rectangle(frame, (x, y), (x + w, y + h), (0,255,0), 2)
+            if (w * h) > (bestw * besth):
+                bestx, besty, bestw, besth = x, y, w, h
 
 
-        crop_img = img[y:y + h, x:x + w]
+        # Take center 60 percent of x coordinates
+        bestx += int(.20 * bestw)
+        bestw = int(bestw * .6)
+
+        cv.rectangle(frame, (bestx, besty), (bestx + bestw, besty + besth), (0,255,0), 2)
+
+            # Condition to 
+            #if 
+
+
+        crop_img = img[besty:besty + besth, bestx:bestx + bestw]
 
         heartbeat_values = heartbeat_values[1:] + [np.average(crop_img)]
         heartbeat_times = heartbeat_times[1:] + [time.time()]
@@ -66,7 +87,8 @@ def begin(opt):
         plt.cla()
         #cv.rectangle(frame, (x, y), (x+w, y+h), (255,0,0), 3)
 
-        #sock.sendto((heartbeat_values).encode(), (UDP_IP, UDP_PORT))
+        if (not (count%30)):
+            sock.sendto((str(np.average(heartbeat_values))).encode(), (UDP_IP, UDP_PORT))
 
         if (opt.view):
             cv.imshow('Main', frame)
