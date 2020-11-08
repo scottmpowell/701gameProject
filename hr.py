@@ -92,12 +92,13 @@ def begin(opt):
         besty += int(.1 * besth)
         besth = int(besth * .8)
 
+        even_croppier_h = int(besth * .25)
 
             # Condition to 
             #if 
 
 
-        crop_img = img[besty:besty + besth, bestx:bestx + bestw]
+        crop_img = img[besty:besty + even_croppier_h, bestx:bestx + bestw]
 
         # Reminder that opencv reads images in BGR format, so R is at index 2
         extracted_r = np.mean(crop_img[:,:,2])
@@ -142,6 +143,7 @@ def begin(opt):
 
             bpm = freqs[np.argmax(pruned)]
             bpms.append(bpm)
+            ax.plot(pfreq, pruned)
 
             print(bpm)
             
@@ -149,7 +151,6 @@ def begin(opt):
         heartbeat_values = heartbeat_values[1:] + [np.average(crop_img)]
         heartbeat_times = heartbeat_times[1:] + [time.time()]
 
-        ax.plot(heartbeat_times, heartbeat_values)
         fig.canvas.draw()
         plot_img_np = np.fromstring(fig.canvas.tostring_rgb(),
                 dtype=np.uint8, sep='')
