@@ -137,25 +137,26 @@ def begin(opt):
 
             freqs = float(fps) / len(buff) * np.arange(len(buff) / 2 + 1)
             freqs = 60. * freqs
-            idx = np.where((freqs > 50) & (freqs < 180))
+            idx = np.where((freqs >= 55) & (freqs < 180))
 
             # Add floor and ceiling to hr at 50/180 bpm
 
-            print(fft)  
-            print(idx)
             pruned = fft[idx]
-            print(pruned)
+            #print(pruned)
             pfreq = freqs[idx]
-            #print(freqs)
+            print(pfreq)
+            print(pruned)
+            
 
-            bpm = freqs[np.argmax(pruned)]
+            bpm = pfreq[np.argmax(pruned)]
+            #print("max", np.argmax(pruned))
+            print(bpm, "bpm")
+
             if bpm == 0:
                 bpm = freqs[np.argmax(pruned) + 1]
-            #print(np.argmax(pruned))
             bpms.append(bpm)
             ax.plot(pfreq, pruned)
 
-            #print(bpm)
             
 
         heartbeat_values = heartbeat_values[1:] + [np.average(crop_img)]
