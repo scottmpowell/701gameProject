@@ -25,7 +25,6 @@ def begin(opt):
     last = []
 
     if opt.input:
-        print(opt.input)
         try:
             cap = cv.VideoCapture(opt.input)
         except:
@@ -47,7 +46,7 @@ def begin(opt):
     
     heartbeat_count = 60
     buff = []
-    buffer_size = 20
+    buffer_size = 100
     times = []
     heartbeat_values = [0]*heartbeat_count
     heartbeat_times = [time.time()]*heartbeat_count
@@ -56,7 +55,6 @@ def begin(opt):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    sock.sendto(("hello").encode(), (UDP_IP, UDP_PORT))
     count = cap.get(cv.CAP_PROP_FPS)
 
     while(cap.isOpened()):
@@ -105,16 +103,19 @@ def begin(opt):
         extracted_g = np.mean(crop_img[:,:,1])
         extracted_b = np.mean(crop_img[:,:,0])
 
+
+        # If sudden change occurs (bpm change of 10 in a single second, use previous value
+        if (abs(extracted_g - np.mean(buff)) > 10 and len(buff) >= buffer_size):
+            extracted_g = buff[-1]
+
         times.append(time.time() - t0)
         buff.append(extracted_g)
-
-        if (abs(extracted_g - np.mean(buff)) > 10 and len(buff) >= buffer_size):
-            pass
 
         # Make sure that buff isn't longer than buffer size
         if len(buff) > buffer_size:
             buff = buff[-buffer_size:]
             times = times[-buffer_size:]
+            bpms = bpms[-buffer_size:]
 
         processed = np.array(buff)
 
@@ -125,35 +126,44 @@ def begin(opt):
             interpolated = np.interp(spaced_times, times, processed)
             interpolated = np.hamming(len(buff)) * interpolated
 
-            normalized = interpolated/np.linalg.norm(interpolated)
+            normalized = interpolated / np.linalg.norm(interpolated)
 
-            rawfft = np.fft.rfft(normalized*30)
+            rawfft = np.fft.rfft(normalized*10)
 
+            # This should make it so we use the true fps
             fps = float(len(buff)) / (times[-1] - times[0])
 
-            freqs = float(fps) / len(buff) * np.arange(len(buff) / 2 + 1)
-            freqs *= 60.
             fft = np.abs(rawfft)**2
 
-            # Add floor and ceiling to hr at 50/180 bpm
+            freqs = float(fps) / len(buff) * np.arange(len(buff) / 2 + 1)
+            freqs = 60. * freqs
             idx = np.where((freqs > 50) & (freqs < 180))
 
+            # Add floor and ceiling to hr at 50/180 bpm
+
+            print(fft)  
+            print(idx)
             pruned = fft[idx]
+            print(pruned)
             pfreq = freqs[idx]
+            #print(freqs)
 
             bpm = freqs[np.argmax(pruned)]
+            if bpm == 0:
+                bpm = freqs[np.argmax(pruned) + 1]
+            #print(np.argmax(pruned))
             bpms.append(bpm)
             ax.plot(pfreq, pruned)
 
-            print(bpm)
+            #print(bpm)
             
 
         heartbeat_values = heartbeat_values[1:] + [np.average(crop_img)]
         heartbeat_times = heartbeat_times[1:] + [time.time()]
 
         fig.canvas.draw()
-        plot_img_np = np.fromstring(fig.canvas.tostring_rgb(),
-                dtype=np.uint8, sep='')
+        plot_img_np = np.frombuffer(fig.canvas.tostring_rgb(),
+                dtype=np.uint8)
         plot_img_np = plot_img_np.reshape(fig.canvas.get_width_height()[::-1] + (3,))
         plt.cla()
         #cv.rectangle(frame, (x, y), (x+w, y+h), (255,0,0), 3)
@@ -163,12 +173,13 @@ def begin(opt):
             sock.sendto((str(np.average(heartbeat_values))).encode(), (UDP_IP, UDP_PORT))
 
         cv.rectangle(frame, (bestx, besty), (bestx + bestw, besty + besth), (0,255,0), 2)
+
         if (opt.view):
             cv.imshow('Main', frame)
             cv.imshow('Crop', crop_img)
             cv.imshow('Graph', plot_img_np)
 
-        key = cv.waitKey(100)
+        key = cv.waitKey(1)
         if key == ord('q'):
             break
     cap.release()
