@@ -11,14 +11,24 @@ public class PlayerController : MonoBehaviour
 
     //phsyics stuff
     private Rigidbody2D rigidBody;
+    public Transform feet;
+    public Transform front;
+    public Transform back;
+    public LayerMask whatIsGround;
+    public float checkRadius;
     public float ground_acceleration;
     public float ground_deceleration;
     public float air_acceleration;
     public float air_deceleration;
     public float maxSpeed;
     public float jumpSpeed;
+    public float wallSlidingSpeed;
+    public float wallJumpTime;
+    public float xWallForce;
+    public float yWallForce;
     private float dt;
-    private bool isGrounded;
+    private bool wallSliding;
+    private bool wallJumping;
     //do jump enumeration shit
 
     // Start is called before the first frame update
@@ -32,7 +42,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         dt = Time.fixedDeltaTime;
-
+        wallSliding = false;
+        wallJumping = false;
     }
 
     // Update is called once per frame
@@ -46,6 +57,9 @@ public class PlayerController : MonoBehaviour
     {
         // keeps track of new velocity to set as rigidBody velocity
         Vector2 movement = Vector2.zero;
+
+        //checks to see if grounded
+        bool isGrounded = Physics2D.OverlapCircle(feet.position, checkRadius, whatIsGround);
 
         float acceleration = isGrounded ? ground_acceleration : air_acceleration;
         float deceleration = isGrounded ? ground_deceleration : air_deceleration;
@@ -106,6 +120,42 @@ public class PlayerController : MonoBehaviour
             movement.y = rigidBody.velocity.y;
         }
 
+        // handles wall jumping/sliding
+        bool isWalledFront = Physics2D.OverlapCircle(front.position, checkRadius, whatIsGround);
+        bool isWalledBack = Physics2D.OverlapCircle(back.position, checkRadius, whatIsGround);
+
+        // determines whether wall sliding or not
+        if(((isWalledFront && x_input > 0) || (isWalledBack && x_input < 0)) && !isGrounded)
+        {
+            wallSliding = true;
+        }
+        else
+        {
+            wallSliding = false;
+        }
+
+        // if wall sliding, cap velocity
+        if(wallSliding)
+        {
+            movement = new Vector2(movement.x, Mathf.Clamp(movement.y, -wallSlidingSpeed, float.MaxValue));
+        }
+
+        // handle wall jump
+        if(wallSliding && Input.GetButton("Jump"))
+        {
+            wallJumping = true;
+            Invoke("SetWallJumpingToFalse", wallJumpTime);
+        }
+
+        if(wallJumping)
+        {
+            movement.x = xWallForce * -x_input;
+            movement.y = yWallForce;
+        }
+
+
+
+
         animator.SetBool("Grounded", isGrounded);
         animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
 
@@ -113,35 +163,9 @@ public class PlayerController : MonoBehaviour
         rigidBody.velocity = movement;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void SetWallJumpingToFalse()
     {
-        if (CollisionIsWithGround(collision))
-        {
-            isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (!CollisionIsWithGround(collision))
-        {
-            isGrounded = false;
-        }
-    }
-
-    private bool CollisionIsWithGround(Collision2D collision)
-    {
-        bool is_with_ground = false;
-        foreach (ContactPoint2D c in collision.contacts)
-        {
-            Vector2 collision_direction_vector = c.point - rigidBody.position;
-            if (collision_direction_vector.y < 0)
-            {
-                is_with_ground = true;
-            }
-        }
-
-        return is_with_ground;
+        wallJumping = false;
     }
 
 

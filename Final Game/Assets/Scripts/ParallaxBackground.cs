@@ -6,7 +6,7 @@ public class ParallaxBackground : MonoBehaviour
 {
 
     public GameObject cam;
-    [SerializeField] private Vector2 pEMult;
+    public Vector2 pEMult;
     private float length, startPos;
 
 
