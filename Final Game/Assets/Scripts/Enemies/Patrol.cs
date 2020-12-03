@@ -5,7 +5,7 @@ using UnityEngine;
 public class Patrol : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    //private Animator animator;
     private Rigidbody2D rigidBody;
 
     public Transform front;
@@ -24,7 +24,7 @@ public class Patrol : MonoBehaviour
         rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
 
         spriteRenderer.flipX = true;
         direction = true;
