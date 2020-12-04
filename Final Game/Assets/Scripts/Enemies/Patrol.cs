@@ -5,17 +5,17 @@ using UnityEngine;
 public class Patrol : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    //private Animator animator;
     private Rigidbody2D rigidBody;
 
     public Transform front;
     public Transform back;
+    public Transform forward;
+    public Transform backward;
     public float checkRadius;
     public LayerMask whatIsGround;
-
+    public bool direction;
     public float speed;
 
-    private bool direction;
 
     void Start()
     {
@@ -24,10 +24,8 @@ public class Patrol : MonoBehaviour
         rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //animator = GetComponent<Animator>();
 
-        spriteRenderer.flipX = true;
-        direction = true;
+        spriteRenderer.flipX = direction;
     }
 
     void Update()
@@ -38,11 +36,13 @@ public class Patrol : MonoBehaviour
 
         if (direction)
         {
-            keepGoing = Physics2D.OverlapCircle(front.position, checkRadius, whatIsGround);
+            keepGoing = Physics2D.OverlapCircle(front.position, checkRadius, whatIsGround) &&
+                        !Physics2D.OverlapCircle(forward.position, checkRadius, whatIsGround);
         }
         else
         {
-            keepGoing = Physics2D.OverlapCircle(back.position, checkRadius, whatIsGround);
+            keepGoing = Physics2D.OverlapCircle(back.position, checkRadius, whatIsGround) &&
+                        !Physics2D.OverlapCircle(backward.position, checkRadius, whatIsGround);
         }
 
         if (keepGoing)

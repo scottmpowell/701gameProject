@@ -29,9 +29,7 @@ public class PlayerController : MonoBehaviour
     private float dt;
     private bool wallSliding;
     private bool wallJumping;
-    //do jump enumeration shit
 
-    // Start is called before the first frame update
     void Start()
     {
         // get rigidbody component and freeze rotation on it
@@ -138,6 +136,7 @@ public class PlayerController : MonoBehaviour
         if(wallSliding)
         {
             movement = new Vector2(movement.x, Mathf.Clamp(movement.y, -wallSlidingSpeed, float.MaxValue));
+            spriteRenderer.flipX = !spriteRenderer.flipX;
         }
 
         // handle wall jump
