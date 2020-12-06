@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Diagnostics;
 
 public class CVConnect: MonoBehaviour
@@ -15,13 +16,14 @@ public class CVConnect: MonoBehaviour
 	int port;
 
 	public GameObject Player;
-
-	int heartRate;
+    public Slider HRSlider;
+    public GameObject EmotionWord;
+	double heartRate;
+    private float timer = 0.0f;
 
 
 	void ReceiveData()
 	{
-
 		client = new UdpClient(port);
 		/*
 		Process proc = new Process();
@@ -40,14 +42,14 @@ public class CVConnect: MonoBehaviour
 				byte[] data = client.Receive(ref anyIP);
 
 				double text = Convert.ToDouble(Encoding.UTF8.GetString(data));
-				if (text > 80) {
+                heartRate = text;
+				if (heartRate > 80) {
 					print("stressed");
-					BroadcastMessage("heartrate", text);
 				}
-				else if (text < 80) {
+				else if (heartRate < 80) {
 					print("not stressed");
+                    
 					//Player.maxSpeed = 6;
-					BroadcastMessage("heartrate", text);
 				}
 				print(">>> " + text);
 			}
@@ -73,12 +75,18 @@ public class CVConnect: MonoBehaviour
     void Start()
     {
 		port = 5065;
-		ReceiveData();
+		InitUDP();
+        print(Player.GetComponent<PlayerController>().maxSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        timer += Time.deltaTime;
+        if (timer >= 1)
+        {
+            HRSlider.GetComponent<Slider>().value = (float)heartRate;
+            timer = 0.0f;
+        }
     }
 }

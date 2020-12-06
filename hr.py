@@ -47,7 +47,8 @@ def begin(opt):
     
     heartbeat_count = 60
     buff = []
-    BUFFER_SIZE = 100
+    BUFFER_SIZE = 100 # Approximately 3.3 seconds
+    BPMS_SIZE = 600 # Approximately 20 seconds
     times = []
     heartbeat_values = [0]*heartbeat_count
     heartbeat_times = [time.time()]*heartbeat_count
@@ -60,6 +61,11 @@ def begin(opt):
     bpm_avg = 0
     elevated_count = 0 # How long elevated hr has persisted
     elevated_threshold = .2 # What percent hr must be over average to cause spike
+
+
+    # Emotion
+    expressed_negative_emotion = False # If a negative emotion has been expressed
+    emotion = "" # Which emotion
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -127,7 +133,9 @@ def begin(opt):
         if len(buff) > BUFFER_SIZE:
             buff = buff[-BUFFER_SIZE:]
             times = times[-BUFFER_SIZE:]
-            bpms = bpms[-BUFFER_SIZE:]
+
+        if len(bpms) > BPMS_SIZE:
+            bpms = bpms[-BPMS_SIZE:]
 
         processed = np.array(buff)
 
@@ -159,19 +167,30 @@ def begin(opt):
 
             # TODO
             # If the max is really far away from both the average and the last good bpm AND there is a value close to the last_good that is only a little bit off from the max, use that instead
-            #print(fft, "fft")
-            #print(freqs, "freqs")
             bpm = pfreq[np.argmax(pruned)]
             bpms.append(bpm)
             ax.plot(buff)
+
+
+            # Handle Heart Rate average
+            long_average = np.mean(bpms)
+            short_average = np.mean(bpms[-BUFFER_SIZE:])
+            percent_elevation = (short_average - long_average) / long_average
+
+            if percent_elevation >= .2:
+                percent_elevation = .2
+
+            elif percent_elevation <= 0:
+                percent_elevation = 0
+
 
             
 
         cv.rectangle(frame, (x, y), (x+w, y+h), (255,0,0), 3)
 
-        if (not (count%30)):
+        if (len(buff) == BUFFER_SIZE and not (count%30)):
             print(np.mean(bpms), "bpm")
-            sock.sendto((str(np.mean(bpms))).encode(), (UDP_IP, UDP_PORT))
+            sock.sendto((str(percent_elevation / .2)).encode(), (UDP_IP, UDP_PORT))
 
         cv.rectangle(frame, (bestx, besty), (bestx + bestw, besty + besth), (0,255,0), 2)
 
