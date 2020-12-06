@@ -85,8 +85,8 @@ def begin(opt):
     
     heartbeat_count = 60
     buff = []
-    BUFFER_SIZE = 100 # Approximately 3.3 seconds
-    BPMS_SIZE = 600 # Approximately 20 seconds
+    BUFFER_SIZE = 100 # Approximately 3 seconds
+    BPMS_SIZE = 450 # Approximately 15 seconds
     times = []
     heartbeat_values = [0]*heartbeat_count
     heartbeat_times = [time.time()]*heartbeat_count
@@ -94,16 +94,14 @@ def begin(opt):
     bpms = []
 
 
-    # persistence values
+    # important variables to keep track of 
     last_good_bpm = 0
     bpm_avg = 0
-    elevated_count = 0 # How long elevated hr has persisted
     elevated_threshold = .2 # What percent hr must be over average to cause spike
 
 
     # Emotion
-    expressed_negative_emotion = False # If a negative emotion has been expressed
-    emotion = "" # Which emotion
+    emotion_index = -1 # Index of emotion to send to Unity.
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -156,7 +154,11 @@ def begin(opt):
         emotion_cropped = np.expand_dims(np.expand_dims(cv.resize(emotion_roi, (48, 48)), -1), 0)
         prediction = model.predict(emotion_cropped)
         maxindex = int(np.argmax(prediction))
-        emotion = emotion_dict[maxindex]
+
+        # Set emotion to be worst emotion of second
+        if maxindex > 5 or maxindex < 3 or emotion_index == -1:
+            emotion_index = maxindex
+
         cv.putText(frame, emotion_dict[maxindex], (x+10, y-10), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv.LINE_AA)
 
 
@@ -235,8 +237,11 @@ def begin(opt):
         cv.rectangle(frame, (x, y), (x+w, y+h), (255,0,0), 3)
 
         if (len(buff) == BUFFER_SIZE and not (count%30)):
-            print(np.mean(bpms), "bpm")
-            sock.sendto((str(percent_elevation / .2)).encode(), (UDP_IP, UDP_PORT))
+            print(short_average, "bpm")
+            message = str(str(percent_elevation / .2) + " " + emotion_dict[emotion_index] + " " + str(emotion_index))
+            print(message)
+            sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
+            emotion_index = -1
 
         if (opt.view):
             fig.canvas.draw()

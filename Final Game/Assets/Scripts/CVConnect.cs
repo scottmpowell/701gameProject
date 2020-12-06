@@ -16,10 +16,13 @@ public class CVConnect: MonoBehaviour
 	int port;
 
 	public GameObject Player;
-    public Slider HRSlider;
-    public GameObject EmotionWord;
+    	public Slider HRSlider;
+    	public GameObject EmotionWord;
+	public Slider EmotionSlider;
 	double heartRate;
-    private float timer = 0.0f;
+	string playerEmotion;
+    	private float timer = 0.0f;
+	private float emotionLockout = 0.0f;
 
 
 	void ReceiveData()
@@ -40,8 +43,14 @@ public class CVConnect: MonoBehaviour
 			{
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port);
 				byte[] data = client.Receive(ref anyIP);
-
-				heartRate = Convert.ToDouble(Encoding.UTF8.GetString(data));
+				string[] info = Encoding.UTF8.GetString(data).Split();
+				int index = Convert.ToInt16(info[2]);
+				heartRate = Convert.ToDouble(info[0]);
+				playerEmotion = info[1];
+				if (index > 5 || index < 3)
+				{
+					emotionLockout = 6.0f;
+				}
 			}
 			catch(Exception e)
 			{
@@ -66,17 +75,28 @@ public class CVConnect: MonoBehaviour
     {
 		port = 5065;
 		InitUDP();
-        print(Player.GetComponent<PlayerController>().maxSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
+	if (emotionLockout != 0.0)
+	{
+		emotionLockout -= Time.deltaTime;
+
+		if (emotionLockout < 0.0)
+		{
+			emotionLockout = 0.0F;
+		}
+		EmotionSlider.GetComponent<Slider>().value = (float)(emotionLockout / 5.0F);
+	}
+
         if (timer >= 1)
         {
             HRSlider.GetComponent<Slider>().value = (float)heartRate;
-	    if (heartRate == 1) {
+	    EmotionWord.GetComponent<Text>().text = playerEmotion;
+	    if (heartRate == 1 || emotionLockout - 1.0 > 0) {
 		    Player.GetComponent<PlayerController>().Stress();
 		    print(Player.GetComponent<PlayerController>().maxSpeed);
 	    }
