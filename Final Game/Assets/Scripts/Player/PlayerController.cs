@@ -4,7 +4,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // Constants for heart rate
+    public float UNSTRESSED_GROUND_ACCELERATION = 0.6F;
+    public float UNSTRESSED_GROUND_DECELERATION = 2F;
+    public float UNSTRESSED_AIR_ACCELERATION = 0.5F;
+    public float UNSTRESSED_AIR_DECELERATION = 0.2F;
+    public float UNSTRESSED_MAX_SPEED = 6F;
+    public float UNSTRESSED_JUMP_SPEED = 5.4F;
+    public float STRESSED_GROUND_ACCELERATION = 0.4F;
+    public float STRESSED_GROUND_DECELERATION = 1F;
+    public float STRESSED_AIR_ACCELERATION = 0.5F;
+    public float STRESSED_AIR_DECELERATION = 0.2F;
+    public float STRESSED_MAX_SPEED = 1F;
+    public float STRESSED_JUMP_SPEED = 7.4F;
 
+    // Stress Boolean
+    public bool isStressed;
+    
     // animation stuff
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -144,5 +160,31 @@ public class PlayerController : MonoBehaviour
         return is_with_ground;
     }
 
+    public void Stress()
+    {
+	if (isStressed) {
+		return;
+	}
+	ground_acceleration = STRESSED_GROUND_ACCELERATION;
+	ground_deceleration = STRESSED_GROUND_DECELERATION;
+	air_acceleration = STRESSED_AIR_ACCELERATION;
+	air_deceleration = STRESSED_AIR_DECELERATION;
+	maxSpeed = STRESSED_MAX_SPEED;
+	jumpSpeed = STRESSED_JUMP_SPEED;
+	isStressed = true;
+    }
 
+    public void Destress()
+    {
+	if (!isStressed) {
+		return;
+	}
+	ground_acceleration = UNSTRESSED_GROUND_ACCELERATION;
+	ground_deceleration = UNSTRESSED_GROUND_DECELERATION;
+	air_acceleration = UNSTRESSED_AIR_ACCELERATION;
+	air_deceleration = UNSTRESSED_AIR_DECELERATION;
+	maxSpeed = UNSTRESSED_MAX_SPEED;
+	jumpSpeed = UNSTRESSED_JUMP_SPEED;
+	isStressed = false;
+    }
 }

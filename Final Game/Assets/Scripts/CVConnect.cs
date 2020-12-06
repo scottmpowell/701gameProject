@@ -41,17 +41,7 @@ public class CVConnect: MonoBehaviour
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port);
 				byte[] data = client.Receive(ref anyIP);
 
-				double text = Convert.ToDouble(Encoding.UTF8.GetString(data));
-                heartRate = text;
-				if (heartRate > 80) {
-					print("stressed");
-				}
-				else if (heartRate < 80) {
-					print("not stressed");
-                    
-					//Player.maxSpeed = 6;
-				}
-				print(">>> " + text);
+				heartRate = Convert.ToDouble(Encoding.UTF8.GetString(data));
 			}
 			catch(Exception e)
 			{
@@ -86,6 +76,13 @@ public class CVConnect: MonoBehaviour
         if (timer >= 1)
         {
             HRSlider.GetComponent<Slider>().value = (float)heartRate;
+	    if (heartRate == 1) {
+		    Player.GetComponent<PlayerController>().Stress();
+		    print(Player.GetComponent<PlayerController>().maxSpeed);
+	    }
+	    else {
+		    Player.GetComponent<PlayerController>().Destress();
+	    }
             timer = 0.0f;
         }
     }
