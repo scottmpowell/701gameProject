@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class TrophyMovement : MonoBehaviour
 {
     public float speed;
     public float magnitude;

@@ -6,24 +6,25 @@ public class PlayerController : MonoBehaviour
 {
 
     // Constants for heart rate
-    public float UNSTRESSED_GROUND_ACCELERATION = 0.6F;
-    public float UNSTRESSED_GROUND_DECELERATION = 2F;
-    public float UNSTRESSED_AIR_ACCELERATION = 0.5F;
-    public float UNSTRESSED_AIR_DECELERATION = 0.2F;
-    public float UNSTRESSED_MAX_SPEED = 6F;
-    public float UNSTRESSED_JUMP_SPEED = 5.4F;
-    public float UNSTRESSED_WALL_SLIDING_SPEED = 3F;
-    public float UNSTRESSED_X_WALL_FORCE = 3.9F;
-    public float UNSTRESSED_Y_WALL_FORCE = 4.8F;
-    public float STRESSED_GROUND_ACCELERATION = 0.4F;
-    public float STRESSED_GROUND_DECELERATION = 1F;
-    public float STRESSED_AIR_ACCELERATION = 0.5F;
-    public float STRESSED_AIR_DECELERATION = 0.2F;
-    public float STRESSED_MAX_SPEED = 4F;
-    public float STRESSED_JUMP_SPEED = 7.4F;
-    public float STRESSED_WALL_SLIDING_SPEED = 5F;
-    public float STRESSED_X_WALL_FORCE = 2.2F;
-    public float STRESSED_Y_WALL_FORCE = 3.6F;
+    public float UNSTRESSED_GROUND_ACCELERATION;
+    public float UNSTRESSED_GROUND_DECELERATION;
+    public float UNSTRESSED_AIR_ACCELERATION;
+    public float UNSTRESSED_AIR_DECELERATION;
+    public float UNSTRESSED_MAX_SPEED;
+    public float UNSTRESSED_JUMP_SPEED;
+    public float UNSTRESSED_WALL_SLIDING_SPEED;
+    public float UNSTRESSED_X_WALL_FORCE;
+    public float UNSTRESSED_Y_WALL_FORCE;
+
+    public float STRESSED_GROUND_ACCELERATION;
+    public float STRESSED_GROUND_DECELERATION;
+    public float STRESSED_AIR_ACCELERATION;
+    public float STRESSED_AIR_DECELERATION;
+    public float STRESSED_MAX_SPEED;
+    public float STRESSED_JUMP_SPEED;
+    public float STRESSED_WALL_SLIDING_SPEED;
+    public float STRESSED_X_WALL_FORCE;
+    public float STRESSED_Y_WALL_FORCE;
 
     // Stress Boolean
     private bool isStressed;
@@ -65,8 +66,8 @@ public class PlayerController : MonoBehaviour
         dt = Time.fixedDeltaTime;
         wallSliding = false;
         wallJumping = false;
-	isStressed = true;
-	Destress();
+	    isStressed = true;
+	    Destress();
     }
 
     // Update is called once per frame

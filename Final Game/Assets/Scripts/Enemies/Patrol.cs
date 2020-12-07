@@ -12,9 +12,13 @@ public class Patrol : MonoBehaviour
     public Transform forward;
     public Transform backward;
     public float checkRadius;
+    public float bodyRadius;
+    public LayerMask whatIsPlayer;
     public LayerMask whatIsGround;
     public bool direction;
     public float speed;
+
+    public GameObject DeathMenu;
 
 
     void Start()
@@ -31,6 +35,14 @@ public class Patrol : MonoBehaviour
     void Update()
     {
 
+        Move();
+
+        Kill();
+
+    }
+
+    void Move()
+    {
         bool keepGoing = false;
         Vector2 movement = Vector2.zero;
 
@@ -57,6 +69,16 @@ public class Patrol : MonoBehaviour
         }
 
         rigidBody.velocity = movement;
-
     }
+
+    void Kill()
+    {
+        bool colliding = Physics2D.OverlapCircle(this.transform.position, bodyRadius, whatIsPlayer);
+        if(colliding && !DeathMenu.GetComponent<DeathMenu>().GameIsPaused)
+        {
+            Debug.Log("here");
+            DeathMenu.GetComponent<DeathMenu>().OpenDeathMenu();
+        }
+    }
+
 }
