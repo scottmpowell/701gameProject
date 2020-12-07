@@ -238,7 +238,7 @@ def begin(opt):
 
         if (len(buff) == BUFFER_SIZE and not (count%30)):
             print(short_average, "bpm")
-            message = str(str(percent_elevation / .1) + " " + emotion_dict[emotion_index] + " " + str(emotion_index))
+            message = str(str(percent_elevation / .1) + " " + emotion_dict[emotion_index] + " " + str(emotion_index) + " " + str(short_average))
             print(message)
             sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
             emotion_index = -1

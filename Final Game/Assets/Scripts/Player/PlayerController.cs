@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public float STRESSED_GROUND_DECELERATION = 1F;
     public float STRESSED_AIR_ACCELERATION = 0.5F;
     public float STRESSED_AIR_DECELERATION = 0.2F;
-    public float STRESSED_MAX_SPEED = 1F;
+    public float STRESSED_MAX_SPEED = 4F;
     public float STRESSED_JUMP_SPEED = 7.4F;
     public float STRESSED_WALL_SLIDING_SPEED = 5F;
     public float STRESSED_X_WALL_FORCE = 2.2F;
@@ -65,6 +65,8 @@ public class PlayerController : MonoBehaviour
         dt = Time.fixedDeltaTime;
         wallSliding = false;
         wallJumping = false;
+	isStressed = true;
+	Destress();
     }
 
     // Update is called once per frame

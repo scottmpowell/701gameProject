@@ -19,6 +19,8 @@ public class CVConnect : MonoBehaviour
 	public Slider HRSlider;
 	public GameObject EmotionWord;
 	public Slider EmotionSlider;
+	public GameObject HRValue;
+	double heartRatio;
 	double heartRate;
 	string playerEmotion;
 	private float timer = 0.0f;
@@ -45,7 +47,8 @@ public class CVConnect : MonoBehaviour
 				byte[] data = client.Receive(ref anyIP);
 				string[] info = Encoding.UTF8.GetString(data).Split();
 				int index = Convert.ToInt16(info[2]);
-				heartRate = Convert.ToDouble(info[0]);
+				heartRatio = Convert.ToDouble(info[0]);
+				heartRate = Convert.ToDouble(info[3]);
 				playerEmotion = info[1];
 				if (index > 5 || index < 3)
 				{
@@ -94,10 +97,11 @@ public class CVConnect : MonoBehaviour
 
 		if (timer >= 1)
 		{
-			HRSlider.GetComponent<Slider>().value = (float)heartRate;
+			HRSlider.GetComponent<Slider>().value = (float)heartRatio;
+			HRValue.GetComponent<Text>().text = heartRate.ToString();
 			EmotionWord.GetComponent<Text>().text = playerEmotion;
 
-			if (heartRate == 1 || emotionLockout > 0)
+			if (heartRatio == 1 || emotionLockout > 0)
 			{
 				Player.GetComponent<PlayerController>().Stress();
 			}
