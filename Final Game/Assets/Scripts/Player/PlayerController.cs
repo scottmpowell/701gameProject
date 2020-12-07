@@ -5,6 +5,29 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    // Constants for heart rate
+    public float UNSTRESSED_GROUND_ACCELERATION = 0.6F;
+    public float UNSTRESSED_GROUND_DECELERATION = 2F;
+    public float UNSTRESSED_AIR_ACCELERATION = 0.5F;
+    public float UNSTRESSED_AIR_DECELERATION = 0.2F;
+    public float UNSTRESSED_MAX_SPEED = 6F;
+    public float UNSTRESSED_JUMP_SPEED = 5.4F;
+    public float UNSTRESSED_WALL_SLIDING_SPEED = 3F;
+    public float UNSTRESSED_X_WALL_FORCE = 3.9F;
+    public float UNSTRESSED_Y_WALL_FORCE = 4.8F;
+    public float STRESSED_GROUND_ACCELERATION = 0.4F;
+    public float STRESSED_GROUND_DECELERATION = 1F;
+    public float STRESSED_AIR_ACCELERATION = 0.5F;
+    public float STRESSED_AIR_DECELERATION = 0.2F;
+    public float STRESSED_MAX_SPEED = 1F;
+    public float STRESSED_JUMP_SPEED = 7.4F;
+    public float STRESSED_WALL_SLIDING_SPEED = 5F;
+    public float STRESSED_X_WALL_FORCE = 2.2F;
+    public float STRESSED_Y_WALL_FORCE = 3.6F;
+
+    // Stress Boolean
+    private bool isStressed;
+
     // animation stuff
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -16,16 +39,16 @@ public class PlayerController : MonoBehaviour
     public Transform back;
     public LayerMask whatIsGround;
     public float checkRadius;
-    public float ground_acceleration;
-    public float ground_deceleration;
-    public float air_acceleration;
-    public float air_deceleration;
-    public float maxSpeed;
-    public float jumpSpeed;
-    public float wallSlidingSpeed;
+    private float ground_acceleration;
+    private float ground_deceleration;
+    private float air_acceleration;
+    private float air_deceleration;
+    private float maxSpeed;
+    private float jumpSpeed;
+    private float wallSlidingSpeed;
+    private float xWallForce;
+    private float yWallForce;
     public float wallJumpTime;
-    public float xWallForce;
-    public float yWallForce;
     private float dt;
     private bool wallSliding;
     private bool wallJumping;
@@ -162,10 +185,48 @@ public class PlayerController : MonoBehaviour
         rigidBody.velocity = movement;
     }
 
+    // sets wall jump
     void SetWallJumpingToFalse()
     {
         wallJumping = false;
     }
 
+    // changes physics values to stressed values
+    public void Stress()
+    {
+        if (isStressed)
+        {
+            return;
+        }
+        ground_acceleration = STRESSED_GROUND_ACCELERATION;
+        ground_deceleration = STRESSED_GROUND_DECELERATION;
+        air_acceleration = STRESSED_AIR_ACCELERATION;
+        air_deceleration = STRESSED_AIR_DECELERATION;
+        maxSpeed = STRESSED_MAX_SPEED;
+        jumpSpeed = STRESSED_JUMP_SPEED;
+        wallSlidingSpeed = STRESSED_WALL_SLIDING_SPEED;
+        xWallForce = STRESSED_X_WALL_FORCE;
+        yWallForce = STRESSED_Y_WALL_FORCE;
+        isStressed = true;
+    }
+
+    // changes physics values to unstressed values
+    public void Destress()
+    {
+        if (!isStressed)
+        {
+            return;
+        }
+        ground_acceleration = UNSTRESSED_GROUND_ACCELERATION;
+        ground_deceleration = UNSTRESSED_GROUND_DECELERATION;
+        air_acceleration = UNSTRESSED_AIR_ACCELERATION;
+        air_deceleration = UNSTRESSED_AIR_DECELERATION;
+        maxSpeed = UNSTRESSED_MAX_SPEED;
+        jumpSpeed = UNSTRESSED_JUMP_SPEED;
+        wallSlidingSpeed = UNSTRESSED_WALL_SLIDING_SPEED;
+        xWallForce = UNSTRESSED_X_WALL_FORCE;
+        yWallForce = UNSTRESSED_Y_WALL_FORCE;
+        isStressed = false;
+    }
 
 }
