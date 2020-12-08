@@ -32,14 +32,6 @@ public class CVConnect : MonoBehaviour
 	void ReceiveData()
 	{
 		client = new UdpClient(port);
-		/*
-		Process proc = new Process();
-		proc.StartInfo.FileName = "/usr/bin/python";
-		proc.StartInfo.WorkingDirectory = "~/701gameProject/";
-		proc.StartInfo.UseShellExecute = false;
-		proc.StartInfo.Arguments = "hr.py";
-		proc.Start();
-		*/
 
 		while (true)
 		{
@@ -52,7 +44,7 @@ public class CVConnect : MonoBehaviour
 				heartRatio = Convert.ToDouble(info[0]);
 				heartRate = Convert.ToDouble(info[3]);
 				playerEmotion = info[1];
-				if (index > 5 || index < 3)
+				if (index < 3 || index == 5)
 				{
 					emotionLockout = 5.0f;
 				}
