@@ -2,6 +2,8 @@ Authors: Alex Merrill, Scott Powell, Mary Scott
 
 ## Instructions
 
+First, you need to clone this repository to your machine.
+
 To play our game and utilize the computer vision aspect, you need to have python installed. If you do not wish to use Python. The game will run, however the heart rate will not update and the game will be in permanent calm mode.
 
 You are also going to need some python libraries.
@@ -22,4 +24,4 @@ python hr.py
 
 (If you would like to see the video, you may add the -v option. If you do not have a camera but want to validate that the python script works, you can use -i /path/to/video/of/face)
 
-The script takes a few seconds to establish a resting heart rate, but may be started before running the game. Once you have the script running, you can open up the build in 701gameProject.
+The script takes a few seconds to establish a resting heart rate, but may be started before running the game. Once you have the script running, you can open up the build, "Final Game", in 701gameProject.
