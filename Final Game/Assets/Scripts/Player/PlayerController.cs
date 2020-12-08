@@ -61,8 +61,6 @@ public class PlayerController : MonoBehaviour
     public float wallJumpTime;
     private float dt;
 
-    private float time;
-
     void Start()
     {
         // get rigidbody component and freeze rotation on it
@@ -75,59 +73,25 @@ public class PlayerController : MonoBehaviour
         dt = Time.fixedDeltaTime;
         wallSliding = false;
         wallJumping = false;
-	    isStressed = true;
+        isStressed = true;
         Alive = true;
-	    Destress();
+        Destress();
     }
 
     // Update is called once per frame
     void Update()
     {
-        time += 1f;
-        Debug.Log("time: " + time);
-        if(time == 5000f)
-        {
-            Debug.Log("========================================================");
-            Debug.Log("|||||||||||||||||||| PHYSICS UPDATE ||||||||||||||||||||");
-            Debug.Log("========================================================");
-            Destress();
-        }
-
         if (Alive)
         {
             Move();
             Dead();
-            Print();
         }
     }
 
-    void Print()
-    {
-
-        Debug.Log("==============================================");
-
-
-
-        Debug.Log("ground_acceleration: " + ground_acceleration);
-        Debug.Log("ground_deceleration: " + ground_deceleration);
-        Debug.Log("air_acceleration: " + air_acceleration);
-        Debug.Log("air_deceleration: " + air_deceleration);
-        Debug.Log("maxSpeed: " + maxSpeed);
-        Debug.Log("jumpSpeed: " + jumpSpeed);
-        Debug.Log("wallSlidingSpeed: " + wallSlidingSpeed);
-        Debug.Log("xWallForce: " + xWallForce);
-        Debug.Log("yWallForce: " + yWallForce);
-        Debug.Log("wallJumpTime: " + wallJumpTime);
-
-
-
-        Debug.Log("==============================================");
-
-    }
 
     void Move()
     {
-    
+
         Vector2 movement;
         bool isGrounded = Physics2D.OverlapCircle(feet.position, checkRadius, whatIsGround);
 
@@ -233,7 +197,7 @@ public class PlayerController : MonoBehaviour
     void Dead()
     {
         bool colliding = Physics2D.OverlapArea(topLeft.position, bottomRight.position, whatIsEnemy);
-        if(colliding)
+        if (colliding)
         {
             Alive = false;
             DeadUI.GetComponent<DeathMenu>().OpenDeathMenu();
