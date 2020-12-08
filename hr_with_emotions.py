@@ -156,7 +156,7 @@ def begin(opt):
         if maxindex > 5 or maxindex < 3 or emotion_index == -1:
             emotion_index = maxindex
 
-        cv.putText(frame, emotion_dict[maxindex], (x+10, y-10), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv.LINE_AA)
+        cv.putText(frame, emotion_dict[maxindex], (bestx+10, besty-10), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv.LINE_AA)
 
 
 
