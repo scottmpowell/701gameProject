@@ -15,16 +15,16 @@ public class DeathMenu : MonoBehaviour
 
     public void OpenDeathMenu()
     {
+        UnityEngine.Debug.Log("Here");
         DeadMenu.SetActive(true);
         Time.timeScale = 0f;
-
     }
 
     public void Restart()
     {
         DeadMenu.SetActive(false);
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Level 1");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadMenu()

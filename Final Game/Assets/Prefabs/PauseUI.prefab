@@ -210,7 +210,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -247,7 +247,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameIsPaused: 0
   PauseMen: {fileID: 6077796616619563502}
-  EmoUI: {fileID: 831417545314528487, guid: 3c683994c817ffb4e93a1e6b25e75541, type: 3}
 --- !u!1 &6077796616536906490
 GameObject:
   m_ObjectHideFlags: 0
