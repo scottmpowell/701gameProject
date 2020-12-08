@@ -26,6 +26,8 @@ def begin(opt):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     last = []
+    if platform == 'darwin': # MacOS
+        use('agg')
 
 
     if opt.input:
