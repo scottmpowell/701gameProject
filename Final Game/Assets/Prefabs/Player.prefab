@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106135555648634308}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.117, y: 0.117, z: 0}
+  m_LocalPosition: {x: -0.1241, y: 0.1285, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2704158825965417135}
@@ -203,9 +203,6 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 0
-  whatIsWin:
-    serializedVersion: 2
-    m_Bits: 0
   checkRadius: 0.1
   wallJumpTime: 0.01
 --- !u!212 &2704158825965417137
@@ -366,7 +363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5316629542801209321}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.082, y: -0.174, z: 0}
+  m_LocalPosition: {x: 0.0953, y: -0.1731, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2704158825965417135}

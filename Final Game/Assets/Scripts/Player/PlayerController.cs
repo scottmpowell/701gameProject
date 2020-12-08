@@ -56,10 +56,12 @@ public class PlayerController : MonoBehaviour
     private float wallSlidingSpeed;
     private float xWallForce;
     private float yWallForce;
-    public float wallJumpTime;
-    private float dt;
     private bool wallSliding;
     private bool wallJumping;
+    public float wallJumpTime;
+    private float dt;
+
+    private float time;
 
     void Start()
     {
@@ -81,27 +83,57 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Alive)
+        time += 1f;
+        Debug.Log("time: " + time);
+        if(time == 5000f)
+        {
+            Debug.Log("========================================================");
+            Debug.Log("|||||||||||||||||||| PHYSICS UPDATE ||||||||||||||||||||");
+            Debug.Log("========================================================");
+            Destress();
+        }
+
+        if (Alive)
         {
             Move();
-
             Dead();
+            Print();
         }
     }
 
+    void Print()
+    {
+
+        Debug.Log("==============================================");
+
+
+
+        Debug.Log("ground_acceleration: " + ground_acceleration);
+        Debug.Log("ground_deceleration: " + ground_deceleration);
+        Debug.Log("air_acceleration: " + air_acceleration);
+        Debug.Log("air_deceleration: " + air_deceleration);
+        Debug.Log("maxSpeed: " + maxSpeed);
+        Debug.Log("jumpSpeed: " + jumpSpeed);
+        Debug.Log("wallSlidingSpeed: " + wallSlidingSpeed);
+        Debug.Log("xWallForce: " + xWallForce);
+        Debug.Log("yWallForce: " + yWallForce);
+        Debug.Log("wallJumpTime: " + wallJumpTime);
+
+
+
+        Debug.Log("==============================================");
+
+    }
 
     void Move()
     {
-        // keeps track of new velocity to set as rigidBody velocity
-        Vector2 movement = Vector2.zero;
-
-        //checks to see if grounded
+    
+        Vector2 movement;
         bool isGrounded = Physics2D.OverlapCircle(feet.position, checkRadius, whatIsGround);
 
         float acceleration = isGrounded ? ground_acceleration : air_acceleration;
         float deceleration = isGrounded ? ground_deceleration : air_deceleration;
 
-        // Handles walking physics
         float x_input = Input.GetAxisRaw("Horizontal");
         if (x_input > 0) // handles acceleration
         {
@@ -157,12 +189,11 @@ public class PlayerController : MonoBehaviour
             movement.y = rigidBody.velocity.y;
         }
 
-        // handles wall jumping/sliding
         bool isWalledFront = Physics2D.OverlapCircle(front.position, checkRadius, whatIsGround);
         bool isWalledBack = Physics2D.OverlapCircle(back.position, checkRadius, whatIsGround);
 
         // determines whether wall sliding or not
-        if(((isWalledFront && x_input > 0) || (isWalledBack && x_input < 0)) && !isGrounded)
+        if (((isWalledFront && x_input > 0) || (isWalledBack && x_input < 0)) && !isGrounded)
         {
             wallSliding = true;
         }
@@ -172,34 +203,31 @@ public class PlayerController : MonoBehaviour
         }
 
         // if wall sliding, cap velocity
-        if(wallSliding)
+        if (wallSliding)
         {
             movement = new Vector2(movement.x, Mathf.Clamp(movement.y, -wallSlidingSpeed, float.MaxValue));
             spriteRenderer.flipX = !spriteRenderer.flipX;
         }
 
         // handle wall jump
-        if(wallSliding && Input.GetButton("Jump"))
+        if (wallSliding && Input.GetButton("Jump"))
         {
             wallJumping = true;
             Invoke("SetWallJumpingToFalse", wallJumpTime);
         }
 
-        if(wallJumping)
+        if (wallJumping)
         {
             movement.x = xWallForce * -x_input;
             movement.y = yWallForce;
         }
 
-
-
-
         animator.SetBool("Grounded", isGrounded);
         animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
 
-        // applies new velocity to player Rigidbody2D
         rigidBody.velocity = movement;
     }
+
 
 
     void Dead()
