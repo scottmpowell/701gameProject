@@ -234,7 +234,7 @@ def begin(opt):
 
             
 
-        cv.rectangle(frame, (x, y), (x+w, y+h), (255,0,0), 3)
+        cv.rectangle(frame, (bestx, besty), (bestx+bestw, besty+besth), (255,0,0), 3)
 
         if (len(buff) == BUFFER_SIZE and not (count%30)):
             print(short_average, "bpm")
