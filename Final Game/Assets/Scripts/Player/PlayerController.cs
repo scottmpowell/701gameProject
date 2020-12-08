@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+
+    public GameObject DeadUI;
 
     // Constants for heart rate
     public float UNSTRESSED_GROUND_ACCELERATION;
@@ -26,8 +29,9 @@ public class PlayerController : MonoBehaviour
     public float STRESSED_X_WALL_FORCE;
     public float STRESSED_Y_WALL_FORCE;
 
-    // Stress Boolean
+    // Player States
     private bool isStressed;
+    private bool Alive;
 
     // animation stuff
     private SpriteRenderer spriteRenderer;
@@ -38,7 +42,10 @@ public class PlayerController : MonoBehaviour
     public Transform feet;
     public Transform front;
     public Transform back;
+    public Transform topLeft;
+    public Transform bottomRight;
     public LayerMask whatIsGround;
+    public LayerMask whatIsEnemy;
     public float checkRadius;
     private float ground_acceleration;
     private float ground_deceleration;
@@ -67,13 +74,19 @@ public class PlayerController : MonoBehaviour
         wallSliding = false;
         wallJumping = false;
 	    isStressed = true;
+        Alive = true;
 	    Destress();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if(Alive)
+        {
+            Move();
+
+            Dead();
+        }
     }
 
 
@@ -186,6 +199,17 @@ public class PlayerController : MonoBehaviour
 
         // applies new velocity to player Rigidbody2D
         rigidBody.velocity = movement;
+    }
+
+
+    void Dead()
+    {
+        bool colliding = Physics2D.OverlapArea(topLeft.position, bottomRight.position, whatIsEnemy);
+        if(colliding)
+        {
+            Alive = false;
+            DeadUI.GetComponent<DeathMenu>().OpenDeathMenu();
+        }
     }
 
     // sets wall jump

@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TrophyMovement : MonoBehaviour
 {
     public float speed;
     public float magnitude;
+    public LayerMask whatIsPlayer;
+    public Transform topLeft;
+    public Transform bottomRight;
 
     private bool direction;
     private Vector2 OGPos;
@@ -21,21 +25,38 @@ public class TrophyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 movement = transform.position;
-        if(direction)
+        Move();
+        CheckWin();
+    }
+
+
+    void Move()
+    {
+        Vector2 position = transform.position;
+        if (direction)
         {
-            movement.y += speed;
+            position.y += speed;
         }
         else
         {
-            movement.y -= speed;
+            position.y -= speed;
         }
 
-        if(movement.y > OGPos.y + magnitude || movement.y < OGPos.y - magnitude)
+        if (position.y > OGPos.y + magnitude || position.y < OGPos.y - magnitude)
         {
             direction = !direction;
         }
 
-        transform.position = movement;
+        transform.position = position;
     }
+
+    void CheckWin()
+    {
+        bool colliding = Physics2D.OverlapArea(topLeft.position, bottomRight.position, whatIsPlayer);
+        if(colliding)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+
 }

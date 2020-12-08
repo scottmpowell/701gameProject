@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5112576217829785672}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5112576218195563454}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5112576218559586308}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 5112576219375436335}
   - component: {fileID: 5112576219375436320}
   - component: {fileID: 5112576219375436333}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Patrol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5112576219788580489}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Backward
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -8,7 +8,6 @@ public class PauseMenu : MonoBehaviour
     public bool GameIsPaused = false;
 
     public GameObject PauseMen;
-    public GameObject EmoUI;
 
 
     void Start()
@@ -35,14 +34,12 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         PauseMen.SetActive(false);
-        EmoUI.SetActive(true);
         Time.timeScale = 1f;
         GameIsPaused = false;
     }
     void Pause()
     {
         PauseMen.SetActive(true);
-        EmoUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
@@ -51,7 +48,6 @@ public class PauseMenu : MonoBehaviour
     {
         GameIsPaused = false;
         Time.timeScale = 1f;
-        EmoUI.SetActive(true);
         SceneManager.LoadScene("Menu");
     }
 

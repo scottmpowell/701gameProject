@@ -26,6 +26,8 @@ public class CVConnect : MonoBehaviour
 	private float timer = 0.0f;
 	private float emotionLockout = 0.0f;
 
+	private bool ready;
+
 
 	void ReceiveData()
 	{
@@ -54,6 +56,7 @@ public class CVConnect : MonoBehaviour
 				{
 					emotionLockout = 5.0f;
 				}
+
 			}
 			catch (Exception e)
 			{
@@ -65,6 +68,7 @@ public class CVConnect : MonoBehaviour
 	void InitUDP()
 	{
 		print("UDP Initialized");
+		port = 5065;
 
 		// Create a new thread that listens for info from the python script via UDP socket
 		receiveThread = new Thread(new ThreadStart(ReceiveData));
@@ -72,11 +76,22 @@ public class CVConnect : MonoBehaviour
 		receiveThread.Start();
 	}
 
+	public void EndUDP()
+    {
+		receiveThread.Abort();
+    }
 
-	// Start is called before the first frame update
-	void Start()
+    private void OnDestroy()
+    {
+		EndUDP();
+    }
+
+    // Start is called before the first frame update
+    void Start()
 	{
-		port = 5065;
+		/*ready = false;
+		Time.timeScale = 0f;
+		SomeUI.SetActive(true);*/
 		InitUDP();
 	}
 

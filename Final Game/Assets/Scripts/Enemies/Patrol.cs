@@ -37,8 +37,6 @@ public class Patrol : MonoBehaviour
 
         Move();
 
-        Kill();
-
     }
 
     void Move()
@@ -69,16 +67,6 @@ public class Patrol : MonoBehaviour
         }
 
         rigidBody.velocity = movement;
-    }
-
-    void Kill()
-    {
-        bool colliding = Physics2D.OverlapCircle(this.transform.position, bodyRadius, whatIsPlayer);
-        if(colliding && !DeathMenu.GetComponent<DeathMenu>().GameIsPaused)
-        {
-            Debug.Log("here");
-            DeathMenu.GetComponent<DeathMenu>().OpenDeathMenu();
-        }
     }
 
 }
