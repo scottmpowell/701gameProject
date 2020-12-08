@@ -2,7 +2,11 @@ Authors: Alex Merrill, Scott Powell, Mary Scott
 
 ## Instructions
 
-First, you need to clone this repository to your machine.
+First, you need to clone this repository to your machine. Then you need to switch to the FinalGame branch. To do this run this command from the 701gameProject directory:
+
+```bash
+git checkout FinalGame
+```
 
 To play our game and utilize the computer vision aspect, you need to have python installed. If you do not wish to use Python. The game will run, however the heart rate will not update and the game will be in permanent calm mode.
 
