@@ -3,7 +3,6 @@ import io
 import time
 import numpy as np
 import socket
-from matplotlib import pyplot as plt
 import argparse
 import sys
 from scipy import signal
@@ -103,8 +102,6 @@ def begin(opt):
     # Emotion
     emotion_index = -1 # Index of emotion to send to Unity.
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
     count = cap.get(cv.CAP_PROP_FPS)
 
     while(cap.isOpened()):
@@ -217,7 +214,6 @@ def begin(opt):
             # If the max is really far away from both the average and the last good bpm AND there is a value close to the last_good that is only a little bit off from the max, use that instead
             bpm = pfreq[np.argmax(pruned)]
             bpms.append(bpm)
-            ax.plot(buff)
 
 
             # Handle Heart Rate average
@@ -244,14 +240,8 @@ def begin(opt):
             emotion_index = -1
 
         if (opt.view):
-            fig.canvas.draw()
-            plot_img_np = np.frombuffer(fig.canvas.tostring_rgb(),
-                    dtype=np.uint8)
-            plot_img_np = plot_img_np.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-            plt.cla()
             cv.imshow('Main', frame)
             cv.imshow('Crop', crop_img)
-            cv.imshow('Graph', plot_img_np)
 
         key = cv.waitKey(1)
         if key == ord('q'):

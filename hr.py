@@ -6,6 +6,7 @@ import socket
 from matplotlib import pyplot as plt
 import argparse
 import sys
+import platform
 from scipy import signal
 
 
@@ -26,7 +27,7 @@ def begin(opt):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     last = []
-    if platform == 'darwin': # MacOS
+    if platform.system() == 'darwin': # MacOS
         use('agg')
 
 
@@ -67,9 +68,6 @@ def begin(opt):
     bpm_avg = 0
     elevated_threshold = .1 # What percent hr must be over average to cause spike
 
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
     count = cap.get(cv.CAP_PROP_FPS)
 
     while(cap.isOpened()):
@@ -113,7 +111,6 @@ def begin(opt):
         foreheadh = int(besth * .25)
 
 
-        # Emotion detection
         crop_img = img[besty:besty + foreheadh, bestx:bestx + bestw]
         # Reminder that opencv reads images in BGR format, so R is at index 2
         # We only need one channel
@@ -169,7 +166,6 @@ def begin(opt):
             # If the max is really far away from both the average and the last good bpm AND there is a value close to the last_good that is only a little bit off from the max, use that instead
             bpm = pfreq[np.argmax(pruned)]
             bpms.append(bpm)
-            ax.plot(buff)
 
 
             # Handle Heart Rate average
@@ -195,11 +191,6 @@ def begin(opt):
             sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
 
         if (opt.view):
-            fig.canvas.draw()
-            plot_img_np = np.frombuffer(fig.canvas.tostring_rgb(),
-                    dtype=np.uint8)
-            plot_img_np = plot_img_np.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-            plt.cla()
             cv.imshow('Main', frame)
             cv.imshow('Crop', crop_img)
 
